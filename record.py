@@ -23,12 +23,7 @@ folder =  'videos/' + datetime.now().strftime('%Y%m%d') # Ymd format
 if not os.path.exists(folder):
     os.mkdir(folder)
 
-# FFMPEG command
-# command = "ffmpeg -hide_banner -y -f vfwcap -t 10 -re -rtbufsize 2147.48M -i 0 %s/%s_%s.mkv" % (folder, 'CAM001', curr_datetime)
-
-# -f vfwcap -i "Integrated Camera"
-
-
+# functions for every CAMERA 
 def CAM001():
     print('CAM001 : start recording...')
     #command = "ffmpeg -hide_banner -y -t 10 -re -rtbufsize 2147.48M  -f dshow -i video=\"Webcam C170\"   %s/%s_%s.mkv" % (folder, 'CAM001', curr_datetime)
@@ -44,14 +39,20 @@ def CAM002():
     subprocess.run(command)
     print('CAM002 : done')
 
-# create two new threads
-t1 = Thread(target=CAM001)
-t2 = Thread(target=CAM002)
 
-# start the threads
-t1.start()
-t2.start()
 
-# wait for the threads to complete
-t1.join()
-t2.join()
+try:
+    while True:
+        # create two new threads
+        t1 = Thread(target=CAM001)
+        t2 = Thread(target=CAM002)
+
+        # start the threads
+        t1.start()
+        t2.start()
+
+        # wait for the threads to complete
+        t1.join()
+        t2.join()
+except KeyboardInterrupt:
+    print('interrupted!')
