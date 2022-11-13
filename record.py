@@ -7,6 +7,8 @@ Output video name is output.mkv
 import os
 import subprocess
 from datetime import datetime
+from time import sleep
+from threading import Thread
 
 # Get the current date and
 # time from system
@@ -22,11 +24,31 @@ if not os.path.exists(folder):
     os.mkdir(folder)
 
 # FFMPEG command
-command = "ffmpeg -hide_banner -y -f vfwcap -t 10 -re -rtbufsize 2147.48M -i 0 %s/%s_%s.mkv" % (folder, 'CAM001', curr_datetime)
+# command = "ffmpeg -hide_banner -y -f vfwcap -t 10 -re -rtbufsize 2147.48M -i 0 %s/%s_%s.mkv" % (folder, 'CAM001', curr_datetime)
 
-#print(command)
-# Run the command
-subprocess.run(command)
+# -f vfwcap -i "Integrated Camera"
 
-# Convert the recorded video to H264 Video Codec
-#command = "ffmpeg -i videos/out.mkv"
+
+def CAM001():
+    print('CAM001 : start recording...')
+    command = "ffmpeg -hide_banner -y -t 5 -re -rtbufsize 2147.48M  -f dshow -i video=\"Webcam C170\"  %s/%s_%s.mkv" % (folder, 'CAM001', curr_datetime)
+    subprocess.run(command)
+    print('CAM001 : done')
+
+def CAM002():
+    print('CAM002 : start recording...')
+    command = "ffmpeg -hide_banner -y -t 5 -re -rtbufsize 2147.48M  -f dshow -i video=\"USB Video Device\"  %s/%s_%s.mkv" % (folder, 'CAM002', curr_datetime)
+    subprocess.run(command)
+    print('CAM002 : done')
+
+# create two new threads
+t1 = Thread(target=CAM001)
+t2 = Thread(target=CAM002)
+
+# start the threads
+t1.start()
+t2.start()
+
+# wait for the threads to complete
+t1.join()
+t2.join()
