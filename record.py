@@ -15,8 +15,14 @@ from datetime import datetime
 #curr_datetime = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
 curr_datetime = datetime.now().strftime('%Y%m%d%H%M%S')
 
+# check in videos folder if current date folder was created ?
+# if not,create the date folder
+folder =  'videos/' + datetime.now().strftime('%Y%m%d') # Ymd format
+if not os.path.exists(folder):
+    os.mkdir(folder)
+
 # FFMPEG command
-command = "ffmpeg -hide_banner -y -f vfwcap -t 10 -re -rtbufsize 2147.48M -i 0 videos/%s_%s.mkv" % ('CAM001', curr_datetime)
+command = "ffmpeg -hide_banner -y -f vfwcap -t 10 -re -rtbufsize 2147.48M -i 0 %s/%s_%s.mkv" % (folder, 'CAM001', curr_datetime)
 
 #print(command)
 # Run the command
