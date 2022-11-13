@@ -31,13 +31,16 @@ if not os.path.exists(folder):
 
 def CAM001():
     print('CAM001 : start recording...')
-    command = "ffmpeg -hide_banner -y -t 5 -re -rtbufsize 2147.48M  -f dshow -i video=\"Webcam C170\"  %s/%s_%s.mkv" % (folder, 'CAM001', curr_datetime)
+    #command = "ffmpeg -hide_banner -y -t 10 -re -rtbufsize 2147.48M  -f dshow -i video=\"Webcam C170\"   %s/%s_%s.mkv" % (folder, 'CAM001', curr_datetime)
+    command = "ffmpeg -f dshow -framerate 30 -i video=\"Webcam C170\"  -c:v libx264 -g 30 -c:a aac -preset veryfast -segment_time 10 -segment_wrap 24 -f segment  %s/%s_%s_%s.mp4" % (folder, 'CAM001', curr_datetime, '%03d')
     subprocess.run(command)
     print('CAM001 : done')
 
 def CAM002():
     print('CAM002 : start recording...')
-    command = "ffmpeg -hide_banner -y -t 5 -re -rtbufsize 2147.48M  -f dshow -i video=\"USB Video Device\"  %s/%s_%s.mkv" % (folder, 'CAM002', curr_datetime)
+    #command = "ffmpeg -hide_banner -y -t 10 -re -rtbufsize 2147.48M  -f dshow -i video=\"USB Video Device\"  %s/%s_%s.mkv" % (folder, 'CAM002', curr_datetime)
+    command = "ffmpeg -f dshow -framerate 30 -i video=\"USB Video Device\"  -c:v libx264 -g 30 -c:a aac -preset veryfast -segment_time 10 -segment_wrap 24 -f segment  %s/%s_%s_%s.mp4" % (folder, 'CAM002', curr_datetime, '%03d')
+   
     subprocess.run(command)
     print('CAM002 : done')
 
